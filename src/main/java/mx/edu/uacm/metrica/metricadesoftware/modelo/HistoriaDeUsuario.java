@@ -16,6 +16,10 @@ public class HistoriaDeUsuario {
     @JoinColumn(name = "asignado_id")
     private Usuario asignado;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sprint_id")
+    private Sprint sprint;
+
     public Usuario getAsignado() {
         return asignado;
     }
