@@ -1,9 +1,10 @@
 package mx.edu.uacm.metrica.metricadesoftware.service;
 
 import mx.edu.uacm.metrica.metricadesoftware.modelo.Usuario;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public interface IUsuarioService {
 
     Usuario buscarPorId(long id);
