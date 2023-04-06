@@ -11300,3 +11300,59 @@ body {
 			color: #31708f;
 			text-decoration: line-through;
 		}
+		
+		
+body {
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		.container {
+			display: flex;
+			flex-wrap: wrap;
+		}
+
+		.column {
+			flex: 1;
+			background-color: #f2f2f2;
+			border: 1px solid #ccc;
+			padding: 10px;
+			margin: 10px;
+			min-width: 250px;
+			height: fit-content;
+			box-sizing: border-box;
+			overflow: auto;
+		}
+
+		.task {
+			background-color: #fff;
+			border: 1px solid #ccc;
+			padding: 10px;
+			margin: 10px 0;
+			cursor: move;
+		}
+
+		.task-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.task-header button {
+			background-color: #fff;
+			border: none;
+			color: #007bff;
+			cursor: pointer;
+		}
+
+		.task-header button:hover {
+			text-decoration: underline;
+		}
+
+		.task-header button:focus {
+			outline: none;
+			box-shadow: 0 0 0 3px #007bff;
+		}
+
+		.task-content {
+			margin-top: 10px;
+		}

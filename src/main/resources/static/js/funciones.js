@@ -32,50 +32,22 @@ var myChart = new Chart(
     config
 );
 
-// arrastre de tareas 
-// Seleccionar todas las tareas
-const tareas = document.querySelectorAll('.tarea');
+//arrastre de las tareas del tablero kanban
 
-// Añadir un manejador de eventos para el evento "dragstart"
-tareas.forEach(tarea => {
-  tarea.addEventListener('dragstart', dragstart_handler);
-});
+function allowDrop(event) {
+			event.preventDefault();
+		}
 
-// Añadir un manejador de eventos para el evento "drop"
-const columnas = document.querySelectorAll('.column');
-columnas.forEach(column=> {
-  column.addEventListener('drop', drop_handler);
-});
+		function drag(event) {
+			event.dataTransfer.setData("text", event.target.id);
+		}
 
-// Función que se ejecuta al comenzar a arrastrar una tarea
-function dragstart_handler(event) {
-  // Agregar un identificador de datos para identificar la tarea
-  event.dataTransfer.setData('text/plain', event.target.id);
-}
+		function drop(event) {
+			event.preventDefault();
+			var data = event.dataTransfer.getData("text");
+			event.target.appendChild(document.getElementById(data));
+		}
 
-
-
-// Función que se ejecuta al soltar una tarea en una columna
-function drop_handler(event) {
-  event.preventDefault();
-  // Obtener el identificador de la tarea arrastrada
-  const tarea_id = event.dataTransfer.getData('text/plain');
-  // Mover la tarea a la nueva columna
-  const tarea = document.getElementById(tarea_id);
-  event.target.appendChild(tarea);
-  // Guardar el nuevo estado de la tarea en el almacenamiento local
-  localStorage.setItem(tarea_id, event.target.id);
-}
-
-// Restaurar el estado de las tareas desde el almacenamiento local al cargar la página
-window.addEventListener('load', () => {
-  const tareas = document.querySelectorAll('.tarea');
-  tareas.forEach(tarea => {
-    const estado = localStorage.getItem(tarea.id);
-    if (estado) {
-      const column = document.getElementById(estado);
-      column.appendChild(tarea);
-    }
-  });
-});
-
+		function deleteTask(taskId) {
+			document.getElementById(taskId).remove();
+		}

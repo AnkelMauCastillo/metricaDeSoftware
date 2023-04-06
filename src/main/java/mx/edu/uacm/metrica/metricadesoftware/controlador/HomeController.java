@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -25,6 +26,37 @@ public class HomeController {
         model.addAttribute("historias", historias);
 
         return "historiasUsuario";
+    }
+   
+    @GetMapping("/kanban")
+    public String mostrarKanban(Model model) {
+        // Obtener todas las historias de usuario
+        List<HistoriaDeUsuario> historias = historiaDeUsuarioService.buscarTodos();
+        Integer puntosTotales = historiaDeUsuarioService.sumarPuntosHistorias();
+        List<HistoriaDeUsuario> historiasPorHacer = new ArrayList<>();
+        List<HistoriaDeUsuario> historiasHaciendo = new ArrayList<>();
+        List<HistoriaDeUsuario> historiasHechas = new ArrayList<>();
+        
+        for (HistoriaDeUsuario h : historias) {
+            String estado = h.getStatus();
+            
+            if (estado.equals("porhacer")) {
+                historiasPorHacer.add(h);
+            }
+            else if (estado.equals("haciendo")) {
+                historiasHaciendo.add(h);
+            }
+            else if (estado.equals("hecho")) {
+                historiasHechas.add(h);
+            }
+        }
+
+        model.addAttribute("puntosTotales", puntosTotales);
+        model.addAttribute("HistoriasPorHacer", historiasPorHacer);
+        model.addAttribute("HistoriasHaciendo", historiasHaciendo);
+        model.addAttribute("HistoriasHechas", historiasHechas);
+
+        return "kanban";
     }
 
 }
