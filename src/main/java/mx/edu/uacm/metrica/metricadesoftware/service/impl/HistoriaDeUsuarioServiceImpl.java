@@ -1,15 +1,22 @@
 package mx.edu.uacm.metrica.metricadesoftware.service.impl;
 
+import mx.edu.uacm.metrica.metricadesoftware.expcion.AplicacionExcepcion;
 import mx.edu.uacm.metrica.metricadesoftware.modelo.HistoriaDeUsuario;
 import mx.edu.uacm.metrica.metricadesoftware.modelo.Usuario;
 import mx.edu.uacm.metrica.metricadesoftware.repository.HistoriaDeUsuarioRepository;
 import mx.edu.uacm.metrica.metricadesoftware.service.IHistoriaDeUsuarioService;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Optional;
 @Service
+@Slf4j
 public class HistoriaDeUsuarioServiceImpl implements IHistoriaDeUsuarioService {
     @Autowired
     private HistoriaDeUsuarioRepository historiaDeUsuarioRepository;
@@ -25,8 +32,19 @@ public class HistoriaDeUsuarioServiceImpl implements IHistoriaDeUsuarioService {
     }
 
     @Override
-    public void guardar(HistoriaDeUsuario historia) {
-        historiaDeUsuarioRepository.save(historia);
+    public HistoriaDeUsuario guardar(HistoriaDeUsuario historia) throws AplicacionExcepcion {
+    	HistoriaDeUsuario historiaGuardada= null;
+    	try {
+			
+			 
+			historiaGuardada =  historiaDeUsuarioRepository.save(historia);
+		
+		 } catch (DataAccessException e) {
+			 log.error(e.getMessage());
+             throw new AplicacionExcepcion("Error al guardar el registro");		
+		 
+		 }
+    	return 	historiaGuardada;
     }
 
     @Override

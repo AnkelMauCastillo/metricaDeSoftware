@@ -54,6 +54,7 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="/historiasUsuario">Listar Historias</a>
                                     <a class="nav-link" href="/historiasUsuario">Editar</a>
+                                    <a class="nav-link" href="/historiaRegistro">Agregar</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
@@ -103,78 +104,27 @@
                         </ol>
                         <div class="row">
                      <h2>Tablero Kanban</h2>
-	<style>
-		body {
-			margin: 0;
-			padding: 0;
-			font-family: sans-serif;
-		}
+	
 
-		.container {
-			display: flex;
-			flex-wrap: wrap;
-			justify-content: space-around;
-			padding: 20px;
-			background-color: #f7f7f7;
-		}
 
-		.column {
-			flex-basis: 30%;
-			margin: 10px;
-			padding: 10px;
-			background-color: #ffffff;
-			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-		}
-
-		h2 {
-			margin-top: 0;
-			font-size: 24px;
-			text-align: center;
-		}
-
-		ul {
-			padding: 0;
-			list-style-type: none;
-		}
-
-		li {
-			padding: 10px;
-			margin: 10px 0;
-			background-color: #f2f2f2;
-			border-radius: 5px;
-			box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-			cursor: pointer;
-		}
-
-		li:hover {
-			background-color: #e6e6e6;
-		}
-
-		.done li {
-			background-color: #d9edf7;
-			color: #31708f;
-			text-decoration: line-through;
-		}
-	</style>
-</head>
-<body>
-	<div class="container">
-		<div class="column">
+	<div class="container" >
+		<div class="column" id="pendiente">
 			<h2>Por Hacer</h2>
 			<ul class="todo">
-				<li>Tarea 1</li>
-				<li>Tarea 2</li>
-				<li>Tarea 3</li>
+				<li  class="tarea" draggable="true" id="tarea-1" data-estado="pendiente">Tarea 1</li>
+				<li  class="tarea" draggable="true" id="tarea-2" data-estado="pendiente">Tarea 2</li>
+				<li  class="tarea" draggable="true" id="tarea-3" data-estado="pendiente">Tarea 3</li>
+				<li  class="tarea" draggable="true" id="tarea-4" data-estado="pendiente">Tarea 4</li>
 			</ul>
 		</div>
-		<div class="column">
+		<div class="column" id="haciendo">
 			<h2>Haciendo</h2>
 			<ul class="doing">
-				<li>Tarea 4</li>
-				<li>Tarea 5</li>
+				<li  class="tarea" draggable="true" id="tarea-10" data-estado="pendiente">Tarea 10</li>
+				<li  class="tarea" draggable="true" id="tarea-12" data-estado="pendiente">Tarea 12</li>
 			</ul>
 		</div>
-		<div class="column">
+		<div class="column" id="hecho">
 			<h2>Hecho</h2>
 			<ul class="done">
 				<li>Tarea 6</li>
@@ -183,7 +133,8 @@
 			</ul>
 		</div>
 	</div>
-</body>
+		
+
                         </div>
                         <div class="row">
                             <div class="col-xl-6">

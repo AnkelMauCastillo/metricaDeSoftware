@@ -14,8 +14,8 @@ import java.util.List;
 public class HomeController {
     @Autowired
     private HistoriaDeUsuarioServiceImpl historiaDeUsuarioService;
-
-    @GetMapping("/historias")
+    
+    @GetMapping("/historiasUsuario")
     public String mostrarInicio(Model model) {
         // Obtener todas las historias de usuario
         List<HistoriaDeUsuario> historias = historiaDeUsuarioService.buscarTodos();

@@ -139,6 +139,75 @@ $(document).ready(function () {
 
 	});
 
+   	// registro de historia
+	$("#registro-historia").submit(function (e) {
+
+		e.preventDefault();
+
+	}).validate({
+		rules: {
+			titulo: {
+				required: true,
+				maxlength: 100
+				
+			},
+			puntos: {
+				required: true,
+				number:true
+			},
+			
+			asignado: {
+				required: true
+			}
+			
+		},
+		errorPlacement: function (error, element) {
+			error.appendTo(element.parent());
+		},
+		submitHandler: function (form) {
+
+			var titulo = $("#titulo").val();
+			var descripcion = $("#descripcion").val();
+			var puntos = $("#puntos").val();
+			var estado=$("#estado").val();
+		    var asignado=$("#asignado").val();
+			$.get("/historia/registro", {
+				'title': titulo, 
+				'description': descripcion, 'points': puntos,  'status':estado ,'asignado':asignado
+			}, function (fragmento) {
+
+
+
+				$('#modalMensaje').replaceWith(fragmento);
+
+				var myModal = bootstrap.Modal.getOrCreateInstance(document.querySelector('#modalExitosoError'));
+				myModal.show();
+               //Agregar controlador de eventos para la ventana modal
+               $('#modalExitosoError').on('click', '#botonAceptar', function() {
+                // Seleccionar el formulario y restablecerlo
+                 $('#registro-historia')[0].reset();
+                })
+			});
+
+			return false;
+		}
+
+	});
+
+getEstado = function (selectObject) {
+		var value = selectObject.value;
+		console.log(value);
+	}
+
+getPuntos = function (selectObject) {
+		var value = selectObject.value;
+		console.log(value);
+	}
+
+getAsignado = function (selectObject) {
+		var value = selectObject.value;
+		console.log(value);
+	}
 
 
 
