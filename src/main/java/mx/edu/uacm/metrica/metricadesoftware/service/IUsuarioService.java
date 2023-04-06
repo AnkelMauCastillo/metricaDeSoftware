@@ -11,4 +11,5 @@ public interface IUsuarioService {
     List<Usuario> buscarTodos();
 
     Usuario crearUsuario(Usuario usuario);
+    Usuario obtenerUsuarioPorCorreoYContrasenia(String email, String contrasenia);
 }

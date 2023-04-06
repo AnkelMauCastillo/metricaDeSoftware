@@ -6,13 +6,17 @@ import mx.edu.uacm.metrica.metricadesoftware.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 import java.util.Optional;
 @Service
+@Slf4j
 public class UsuarioServiceImpl implements IUsuarioService {
 
     @Autowired
     private final UsuarioRepository usuarioRepository;
+
 
     public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
@@ -33,4 +37,25 @@ public class UsuarioServiceImpl implements IUsuarioService {
     public Usuario crearUsuario(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
+    
+    @Override
+    public Usuario obtenerUsuarioPorCorreoYContrasenia(String email, String contraseniaPlana) {
+		
+		if(log.isDebugEnabled())
+			log.debug("> Entrando a UsuarioServiceImpl.obtenerUsuarioPorCorreoYContrasenia()");
+		
+		Usuario usuarioRecuperado = usuarioRepository.findByEmail(email);
+		
+		log.debug("usuario recuperado: " + usuarioRecuperado);
+		
+		if(usuarioRecuperado != null && (contraseniaPlana.equals(usuarioRecuperado.getContrasenia()) )) {
+			
+			return usuarioRecuperado;
+		} else {
+			
+			return null;
+		}
+
+	}
+	
 }

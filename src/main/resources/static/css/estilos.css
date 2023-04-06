@@ -1,0 +1,14 @@
+.error {
+	color: red;
+}
+
+*.icon-white {color: white;}
+*.icon-silver {color: silver;}
+*.icon-green {color: green;}
+*.icon-dark {color: gray;}
+
+#burndown-chart {
+  width: 800px;
+  height: 400px;
+  margin: 0 auto;
+}

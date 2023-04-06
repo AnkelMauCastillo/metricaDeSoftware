@@ -15,7 +15,7 @@ public class HomeController {
     @Autowired
     private HistoriaDeUsuarioServiceImpl historiaDeUsuarioService;
 
-    @GetMapping("/")
+    @GetMapping("/historias")
     public String mostrarInicio(Model model) {
         // Obtener todas las historias de usuario
         List<HistoriaDeUsuario> historias = historiaDeUsuarioService.buscarTodos();
@@ -24,7 +24,7 @@ public class HomeController {
         // Agregar las historias de usuario al modelo
         model.addAttribute("historias", historias);
 
-        return "index";
+        return "historiasUsuario";
     }
 
 }
