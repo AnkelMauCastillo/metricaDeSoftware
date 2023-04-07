@@ -20,8 +20,6 @@ public class HistoriaController {
 	 @Autowired
 	    private HistoriaDeUsuarioServiceImpl historiaDeUsuarioService;
 
-	   
-	    
 	    
 	    @GetMapping("/registro")
 	    public String registrarHistroia(Model model, HistoriaDeUsuario historia ) {
