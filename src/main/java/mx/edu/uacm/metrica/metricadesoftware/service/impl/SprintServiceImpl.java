@@ -6,9 +6,10 @@ import mx.edu.uacm.metrica.metricadesoftware.modelo.Sprint;
 import mx.edu.uacm.metrica.metricadesoftware.repository.SprintRepository;
 import mx.edu.uacm.metrica.metricadesoftware.service.ISprintService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class SprintServiceImpl implements ISprintService {
 
     @Autowired

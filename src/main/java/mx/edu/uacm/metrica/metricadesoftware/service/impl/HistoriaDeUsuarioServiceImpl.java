@@ -4,6 +4,7 @@ import mx.edu.uacm.metrica.metricadesoftware.expcion.AplicacionExcepcion;
 import mx.edu.uacm.metrica.metricadesoftware.modelo.HistoriaDeUsuario;
 import mx.edu.uacm.metrica.metricadesoftware.modelo.Usuario;
 import mx.edu.uacm.metrica.metricadesoftware.repository.HistoriaDeUsuarioRepository;
+import mx.edu.uacm.metrica.metricadesoftware.repository.UsuarioRepository;
 import mx.edu.uacm.metrica.metricadesoftware.service.IHistoriaDeUsuarioService;
 
 
@@ -18,11 +19,14 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class HistoriaDeUsuarioServiceImpl implements IHistoriaDeUsuarioService {
+
     @Autowired
     private HistoriaDeUsuarioRepository historiaDeUsuarioRepository;
 
-    public HistoriaDeUsuarioServiceImpl(HistoriaDeUsuarioRepository historiaDeUsuarioRepository) {
+    public HistoriaDeUsuarioServiceImpl(HistoriaDeUsuarioRepository historiaDeUsuarioRepository
+                                       ) {
         this.historiaDeUsuarioRepository = historiaDeUsuarioRepository;
+
     }
 
     @Override
@@ -33,18 +37,12 @@ public class HistoriaDeUsuarioServiceImpl implements IHistoriaDeUsuarioService {
 
     @Override
     public HistoriaDeUsuario guardar(HistoriaDeUsuario historia) throws AplicacionExcepcion {
-    	HistoriaDeUsuario historiaGuardada= null;
-    	try {
-			
-			 
-			historiaGuardada =  historiaDeUsuarioRepository.save(historia);
-		
-		 } catch (DataAccessException e) {
-			 log.error(e.getMessage());
-             throw new AplicacionExcepcion("Error al guardar el registro");		
-		 
-		 }
-    	return 	historiaGuardada;
+    	boolean estaActualizadoLaHistoria = (historia.getId() != null);
+
+        if (estaActualizadoLaHistoria) {
+            HistoriaDeUsuario existeHistoria = historiaDeUsuarioRepository.findById(historia.getId()).get();
+        }
+        return historiaDeUsuarioRepository.save(historia);
     }
 
     @Override
@@ -71,6 +69,9 @@ public class HistoriaDeUsuarioServiceImpl implements IHistoriaDeUsuarioService {
         }
         return puntosTotales;
     }
+
+
+
 
 
 }

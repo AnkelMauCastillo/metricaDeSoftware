@@ -20,6 +20,14 @@ public class HistoriaDeUsuario {
     @JoinColumn(name = "sprint_id")
     private Sprint sprint;
 
+    public Sprint getSprint() {
+        return sprint;
+    }
+
+    public void setSprint(Sprint sprint) {
+        this.sprint = sprint;
+    }
+
     public Usuario getAsignado() {
         return asignado;
     }
