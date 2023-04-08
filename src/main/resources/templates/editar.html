@@ -16,28 +16,28 @@
 </head>
 
 <body>
-    <h2>El usuario Asignado es: <span th:text="${usuario}"></span></h2>
+    
     <div class="container-fluid">
         <form th:action="@{/guardar}" method="post" style="max-width: 700px; margin: 0 auto;" th:object="${historiaDeUsuario}">
+        <h2>El usuario Asignado es: <span th:text="*{asignado.nombre}"></span></h2>
             <input type="hidden" th:field="*{id}" />
             <div class="form-group">
                 <div class="col-sm-6">
                     <label for="id_name">Nombre de Historia</label>
                     <input type="text" class="form-control" placeholder="Nombre de Historia" th:field="*{title}" readonly>    
             </div>
+            </div>
             <div class="form-group">
                 <div class="col-sm-6">
-                    <label for="id_description">Nombre de Historia</label>
+                    <label for="id_description">Descripcion de Historia</label>
                     <input type="text" class="form-control" placeholder="Nombre de Historia" th:field="*{description}" readonly>    
+            </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-6">
                     <label for="id_province">Puntos</label>
                     <input type="text" class="form-control" placeholder="Province" th:field="*{points}" readonly>        
             </div>
-            <div class="form-group">
-                <div class="col-sm-6">                    
-                    <input type="hidden" class="form-control" placeholder="Asignado" th:text="${asignado}" readonly>    
             </div>          
 
             <div class="form-group">                

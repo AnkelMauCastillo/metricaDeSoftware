@@ -39,10 +39,11 @@ public class HomeController {
 
         return "historiasUsuario";
     }
-   
+ 
+    
     @GetMapping("/kanban")
     public String mostrarKanban(Model model) {
-        Sprint sprint = sprintService.obtenerSprintPorId(5l);
+        Sprint sprint = sprintService.obtenerSprintPorId(1l);
         LocalDate fechaInicio = sprint.getFechaInicio();
         LocalDate fechaFin = sprint.getFechaFin();
         long duracion = ChronoUnit.DAYS.between(fechaInicio, fechaFin);

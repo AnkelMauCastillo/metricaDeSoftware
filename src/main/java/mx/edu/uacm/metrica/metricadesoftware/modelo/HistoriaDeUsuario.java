@@ -1,8 +1,10 @@
 package mx.edu.uacm.metrica.metricadesoftware.modelo;
 
 import jakarta.persistence.*;
+import lombok.extern.slf4j.Slf4j;
 
 @Entity
+@Slf4j
 public class HistoriaDeUsuario {
 
     @Id

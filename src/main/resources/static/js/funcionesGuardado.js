@@ -158,6 +158,9 @@ $(document).ready(function () {
 			
 			asignado: {
 				required: true
+			},
+			sprint:{
+				required:true
 			}
 			
 		},
@@ -171,9 +174,10 @@ $(document).ready(function () {
 			var puntos = $("#puntos").val();
 			var estado=$("#estado").val();
 		    var asignado=$("#asignado").val();
+		    var sprint=$("#sprint").val();
 			$.get("/historia/registro", {
 				'title': titulo, 
-				'description': descripcion, 'points': puntos,  'status':estado ,'asignado':asignado
+				'description': descripcion, 'points': puntos,  'status':estado ,'asignado':asignado, 'sprint':sprint
 			}, function (fragmento) {
 
 
@@ -209,6 +213,10 @@ getAsignado = function (selectObject) {
 		console.log(value);
 	}
 
+getSprint = function (selectObject) {
+		var value = selectObject.value;
+		console.log(value);
+	}
 
 
 });
