@@ -21,6 +21,7 @@
         <form th:action="@{/guardar}" method="post" style="max-width: 700px; margin: 0 auto;" th:object="${historiaDeUsuario}">
         <h2>El usuario Asignado es: <span th:text="*{asignado.nombre}"></span></h2>
             <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:field="*{asignado}">
             <div class="form-group">
                 <div class="col-sm-6">
                     <label for="id_name">Nombre de Historia</label>

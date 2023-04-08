@@ -46,7 +46,7 @@ public class HomeController {
         Sprint sprint = sprintService.obtenerSprintPorId(1l);
         LocalDate fechaInicio = sprint.getFechaInicio();
         LocalDate fechaFin = sprint.getFechaFin();
-        long duracion = ChronoUnit.DAYS.between(fechaInicio, fechaFin);
+        long duracion = sprint.calcularDiasLaborables(fechaInicio, fechaFin);
         model.addAttribute("fechaInicio", fechaInicio);
         model.addAttribute("fechaFin", fechaFin);
         model.addAttribute("duracion", duracion);
@@ -112,14 +112,7 @@ public class HomeController {
         Sprint sprint = new Sprint(fechaInicio, fechaFin,historiaDeUsuarioService.buscarTodos());
         System.out.println(historiaDeUsuarioService.buscarTodos());
         System.out.println(sprint.getHistoriasDeUsuario());
-        List<HistoriaDeUsuario> historiasDeUsuario = historiaDeUsuarioService.buscarTodos();
 
-        // Establece la relación entre el sprint y las historias de usuario
-        for (HistoriaDeUsuario historia : historiasDeUsuario) {
-            historia.setSprint(sprint);
-        }
-
-        sprint.setHistoriasDeUsuario(historiasDeUsuario);
         sprintService.guardarSprint(sprint);
         // Redirigir a la página de lista de sprints
         return "redirect:/";

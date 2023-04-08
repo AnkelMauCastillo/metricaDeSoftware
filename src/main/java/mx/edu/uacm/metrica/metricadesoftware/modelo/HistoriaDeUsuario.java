@@ -3,6 +3,8 @@ package mx.edu.uacm.metrica.metricadesoftware.modelo;
 import jakarta.persistence.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
+
 @Entity
 @Slf4j
 public class HistoriaDeUsuario {
@@ -14,6 +16,10 @@ public class HistoriaDeUsuario {
     private String description;
     private int points;
     private String status;
+
+    private LocalDate fechaCreacion;
+
+    private LocalDate fechaFinalizacion;
     @ManyToOne
     @JoinColumn(name = "asignado_id")
     private Usuario asignado;

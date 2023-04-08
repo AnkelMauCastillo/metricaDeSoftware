@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Selector de 7 días con Bootstrap</title>
+  <!-- Incluir CSS de Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Selector de 7 días con Bootstrap</h1>
+    <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action">Día 1</a>
+        <a href="#" class="list-group-item list-group-item-action">Día 2</a>
+        <a href="#" class="list-group-item list-group-item-action">Día 3</a>
+        <a href="#" class="list-group-item list-group-item-action">Día 4</a>
+        <a href="#" class="list-group-item list-group-item-action">Día 5</a>
+        <a href="#" class="list-group-item list-group-item-action">Día 6</a>
+        <a href="#" class="list-group-item list-group-item-action">Día 7</a>
+      </div>
+      
+    <button type="button" class="btn btn-primary" id="guardarBtn">Guardar</button>
+  </div>
+
+  <!-- Incluir JS de jQuery y Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!-- Inicializar Datepicker -->
+  <script type="text/javascript">
+    $(function () {
+      $('#datepicker').datepicker({
+        format: 'yyyy-mm-dd', // Formato de fecha
+        autoclose: true, // Cerrar automáticamente el calendario después de seleccionar una fecha
+        todayHighlight: true // Resaltar la fecha actual
+      });
+      
+      // Manejar clic en el botón "Guardar"
+      $('#guardarBtn').click(function () {
+        var fecha = $('#datepicker input').val();
+        alert('Has seleccionado el día ' + fecha);
+        // Aquí puedes agregar tu lógica para guardar el día seleccionado
+      });
+    });
+  </script>
+</body>
+</html>
