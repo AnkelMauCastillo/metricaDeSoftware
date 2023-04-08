@@ -134,6 +134,9 @@
 										<div class="task-content" style="display: inline;">
 											PH:<h8 th:text="${historia3.points}"></h8>
 										</div>
+										<div class="task-header" th:if="${historia3.fechaFinalizacion == null}">
+                                            <a th:href="@{'/editarFecha/'+ ${historia3.id}}">Terminar Historia</a>
+                                        </div>
 
 									</div>
 								</th:block>

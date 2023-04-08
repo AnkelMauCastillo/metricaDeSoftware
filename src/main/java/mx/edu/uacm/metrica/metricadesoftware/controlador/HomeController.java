@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -89,6 +90,13 @@ public class HomeController {
         } else if (historiaDeUsuario.getStatus().equals("haciendo")) {
             mapStatus.put("hecho", "Hecho");
         }
+        Sprint sprint = sprintService.obtenerSprintPorId(1l);
+        LocalDate fechaInicio = sprint.getFechaInicio();
+        LocalDate fechaFin = sprint.getFechaFin();
+        long duracion = sprint.calcularDiasLaborables(fechaInicio, fechaFin);
+
+        buscarDiasLaborables(model, fechaInicio, fechaFin);
+
 
         model.addAttribute("mapStatus", mapStatus);
         model.addAttribute("historiaDeUsuario", historiaDeUsuario);
@@ -97,10 +105,53 @@ public class HomeController {
 
     }
 
+    private void buscarDiasLaborables(Model model, LocalDate fechaInicio, LocalDate fechaFin) {
+        List<LocalDate> diasLaborables = new ArrayList<>();
+        for (LocalDate date = fechaInicio; date.isBefore(fechaFin); date = date.plusDays(1)) {
+            DayOfWeek dayOfWeek = date.getDayOfWeek();
+            if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY) {
+                diasLaborables.add(date);
+            }
+        }
+
+        model.addAttribute("diasLaborables", diasLaborables);
+    }
+
+    @GetMapping("/editarFecha/{idHistoria}")
+    public String editarFecha(@PathVariable("idHistoria") Long idHistoria, Model model){
+        Map<String, String> mapStatus = new HashMap<>();
+        HistoriaDeUsuario historiaDeUsuario = historiaDeUsuarioService.buscarPorId(idHistoria);
+
+        if (historiaDeUsuario.getStatus().equals("porhacer")) {
+            mapStatus.put("porhacer", "Por Hacer");
+            mapStatus.put("haciendo", "Haciendo");
+        } else if (historiaDeUsuario.getStatus().equals("haciendo")) {
+            mapStatus.put("hecho", "Hecho");
+        }
+
+        model.addAttribute("mapStatus", mapStatus);
+        model.addAttribute("historiaDeUsuario", historiaDeUsuario);
+
+        Sprint sprint = sprintService.obtenerSprintPorId(1l);
+        model.addAttribute("idSprint", sprint.getId());
+        LocalDate fechaInicio = sprint.getFechaInicio();
+        LocalDate fechaFin = sprint.getFechaFin();
+        long duracion = sprint.calcularDiasLaborables(fechaInicio, fechaFin);
+
+        buscarDiasLaborables(model, fechaInicio, fechaFin);
+
+
+        return "editarFecha";
+
+    }
+
     @PostMapping("/guardar")
     public String guardar(@ModelAttribute("historiaDeUsuario") HistoriaDeUsuario historiaDeUsuario) throws AplicacionExcepcion {
-        HistoriaDeUsuario revisar = historiaDeUsuarioService.guardar(historiaDeUsuario);
-        System.out.println(revisar);
+        if (historiaDeUsuario.getFechaFinalizacion().equals(null)) {
+            HistoriaDeUsuario revisar = historiaDeUsuarioService.guardar(historiaDeUsuario);
+            System.out.println(revisar);
+        }
+
         return "redirect:/kanban";
     }
 
@@ -117,6 +168,35 @@ public class HomeController {
         // Redirigir a la página de lista de sprints
         return "redirect:/";
     }
+
+    @GetMapping("/otroControlador")
+    public String otroControlador(@ModelAttribute("historiaDeUsuario") HistoriaDeUsuario historiaDeUsuario,
+                          @RequestParam("fechaTermino") String fechaTermino,
+                                  @RequestParam("idHistoria") Long idHistoria,
+                                  @RequestParam("idSprint") Long idSprint) {
+        // Actualiza la propiedad fechaTermino de la historia de usuario con la fecha seleccionada
+        historiaDeUsuario = historiaDeUsuarioService.buscarPorId(idHistoria);
+        Sprint sprint = sprintService.obtenerSprintPorId(idSprint);
+
+        System.out.println("Entro");
+        System.out.println(historiaDeUsuario);
+        historiaDeUsuario.setFechaFinalizacion(LocalDate.parse(fechaTermino));
+        historiaDeUsuario.setSprint(sprint);
+
+
+        try {
+            historiaDeUsuarioService.guardar(historiaDeUsuario);
+        } catch (AplicacionExcepcion e) {
+            throw new RuntimeException(e);
+        }
+
+        // Guarda la historia de usuario en la base de datos o en algún otro lugar donde la estés almacenando
+
+
+        // Redirige a la página que quieras mostrar después de guardar
+        return "redirect:/kanban";
+    }
+
 
 
 
