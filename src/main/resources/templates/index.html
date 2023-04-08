@@ -22,21 +22,7 @@
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                     class="fas fa-bars"></i></button>
 
-            <!-- Navbar-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                        <li>
-                            <hr class="dropdown-divider" />
-                        </li>
-                        <li><a class="dropdown-item" href="/">Logout</a></li>
-                    </ul>
-                </li>
-            </ul>
+           
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -52,6 +38,8 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Kanban Board
                             </a>
+                            <a class="nav-link" href="/register">
+                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>Agregar Miembro</a>
 
                             <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
@@ -69,40 +57,13 @@
                                     <a class="nav-link" href="/historiaRegistro">Agregar</a>
                                 </nav>
                             </div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Pages
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
-                                data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                        data-bs-target="#pagesCollapseAuth" aria-expanded="false"
-                                        aria-controls="pagesCollapseAuth">
-                                        Authentication
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
-                                        data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="/login">Login</a>
-                                            <a class="nav-link" href="/register">Register</a>
-                                        </nav>
-                                    </div>
-
-                                </nav>
-                            </div>
+                           
                             <div class="sb-sidenav-menu-heading">Recursos</div>
                             <a class="nav-link" href="/charts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Graficas
                             </a>
-                            <a class="nav-link" href="/tables">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Tablas
-                            </a>
+                          
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
@@ -141,6 +102,7 @@
                             <label for="fechaInicio">Fecha de inicio:</label>
                             <input type="date" id="fechaInicio" name="fechaInicio" required>
                             <br>
+                            <label></label>
                             <label for="fechaFin">Fecha de fin:</label>
                             <input type="date" id="fechaFin" name="fechaFin" required>
                             <br>
@@ -165,48 +127,7 @@
                 </div>
 
             </div>
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-table me-1"></i>
-                    Historias De Usuario
-                </div>
-                <div class="card-body">
-                    <table id="datatablesSimple">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
-                                <td>61</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                            </tr>
-
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+           
         </div>
     </main>
     <footer class="py-4 bg-light mt-auto">

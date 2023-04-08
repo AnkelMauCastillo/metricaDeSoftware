@@ -51,64 +51,26 @@ $(document).ready(function () {
 
 	// ***************** Formularios ***************************************************
 
-	//froma de login
-	$("#forma-login").submit(function (e) {
+	
+
+
+$("#registro-usuario").submit(function (e) {
 
 		e.preventDefault();
 
 	}).validate({
 		rules: {
-			correo: {
-				required: true,
-				maxlength: 100,
-				email: true
-			},
-			contrasenia: {
-				required: true
-			}
-		},
-		errorPlacement: function (error, element) {
-			error.appendTo(element.parent());
-		},
-		submitHandler: function (form) {
-
-			var email = $("#email").val();
-			var password = $("#contrasenia").val();
-
-
-			$.post("/usuario/login", { 'email': email, 'contrasenia': password }, function (fragmento) {
-
-				var newDoc = document.open("text/html", "replace");
-				newDoc.write(fragmento);
-				newDoc.close();
-
-
-			});
-
-			return false;
-		}
-
-	});
-
-	// registro de usuario 
-	$("#forma-registro").submit(function (e) {
-
-		e.preventDefault();
-
-	}).validate({
-		rules: {
-			correo: {
-				required: true,
-				maxlength: 100,
-				email: true
-			},
-			contrasenia: {
-				required: true
-			},
 			nombre: {
-				required: true
-
+				required: true,
+				maxlength: 100
+				
+			},
+			correo: {
+				required: true,
+				email: true
 			}
+			
+	
 		},
 		errorPlacement: function (error, element) {
 			error.appendTo(element.parent());
@@ -116,13 +78,10 @@ $(document).ready(function () {
 		submitHandler: function (form) {
 
 			var nombre = $("#nombre").val();
+			var correo = $("#correo").val();
+			var rol = $("#rol").val();
 			
-			var correo = $("#mail").val();
-			var password = $("#contrasenia").val();
-		
-			$.get("/usuario/registro", {
-				'nombre': nombre, 
-				'email': correo, 'contrasenia': password
+			$.get("/usuario/registro", {'nombre': nombre, 'email': correo,  'rol':rol 
 			}, function (fragmento) {
 
 
@@ -131,14 +90,17 @@ $(document).ready(function () {
 
 				var myModal = bootstrap.Modal.getOrCreateInstance(document.querySelector('#modalExitosoError'));
 				myModal.show();
-
+               //Agregar controlador de eventos para la ventana modal
+               $('#modalExitosoError').on('click', '#botonnAceptar', function() {
+                // Seleccionar el formulario y restablecerlo
+                 $('#registro-usuario')[0].reset();
+                })
 			});
 
 			return false;
 		}
 
 	});
-
    	// registro de historia
 	$("#registro-historia").submit(function (e) {
 
@@ -217,7 +179,10 @@ getSprint = function (selectObject) {
 		var value = selectObject.value;
 		console.log(value);
 	}
-
+getRol = function (selectObject) {
+		var value = selectObject.value;
+		console.log(value);
+	}
 
 });
 

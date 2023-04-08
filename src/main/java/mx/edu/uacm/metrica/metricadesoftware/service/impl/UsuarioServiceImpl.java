@@ -38,24 +38,5 @@ public class UsuarioServiceImpl implements IUsuarioService {
         return usuarioRepository.save(usuario);
     }
     
-    @Override
-    public Usuario obtenerUsuarioPorCorreoYContrasenia(String email, String contraseniaPlana) {
-		
-		if(log.isDebugEnabled())
-			log.debug("> Entrando a UsuarioServiceImpl.obtenerUsuarioPorCorreoYContrasenia()");
-		
-		Usuario usuarioRecuperado = usuarioRepository.findByEmail(email);
-		
-		log.debug("usuario recuperado: " + usuarioRecuperado);
-		
-		if(usuarioRecuperado != null && (contraseniaPlana.equals(usuarioRecuperado.getContrasenia()) )) {
-			
-			return usuarioRecuperado;
-		} else {
-			
-			return null;
-		}
-
-	}
-	
+   
 }
