@@ -37,6 +37,10 @@ public class HomeController {
         model.addAttribute("puntosTotales", puntosTotales);
         // Agregar las historias de usuario al modelo
         model.addAttribute("historias", historias);
+        Sprint sprint = sprintService.obtenerSprintPorId(1l);
+        LocalDate fechaInicio = sprint.getFechaInicio();
+        LocalDate fechaFin = sprint.getFechaFin();
+        buscarDiasLaborables(model, fechaInicio, fechaFin);
 
         return "historiasUsuario";
     }
@@ -57,7 +61,7 @@ public class HomeController {
         List<HistoriaDeUsuario> historiasPorHacer = new ArrayList<>();
         List<HistoriaDeUsuario> historiasHaciendo = new ArrayList<>();
         List<HistoriaDeUsuario> historiasHechas = new ArrayList<>();
-        
+
         for (HistoriaDeUsuario h : historias) {
             String estado = h.getStatus();
             
@@ -76,6 +80,7 @@ public class HomeController {
         model.addAttribute("HistoriasPorHacer", historiasPorHacer);
         model.addAttribute("HistoriasHaciendo", historiasHaciendo);
         model.addAttribute("HistoriasHechas", historiasHechas);
+        model.addAttribute("idSprint", sprint.getId());
 
         return "kanban";
     }
@@ -100,6 +105,7 @@ public class HomeController {
 
         model.addAttribute("mapStatus", mapStatus);
         model.addAttribute("historiaDeUsuario", historiaDeUsuario);
+        model.addAttribute("idSprint", sprint.getId());
 
         return "editar";
 
@@ -146,10 +152,16 @@ public class HomeController {
     }
 
     @PostMapping("/guardar")
-    public String guardar(@ModelAttribute("historiaDeUsuario") HistoriaDeUsuario historiaDeUsuario) throws AplicacionExcepcion {
-        if (historiaDeUsuario.getFechaFinalizacion().equals(null)) {
+    public String guardar(@ModelAttribute("historiaDeUsuario") HistoriaDeUsuario historiaDeUsuario
+                          ) throws AplicacionExcepcion {
+
+        if (historiaDeUsuario != null) {
+            System.out.println("entro al modificar la historia");
+            System.out.println(historiaDeUsuario);
             HistoriaDeUsuario revisar = historiaDeUsuarioService.guardar(historiaDeUsuario);
             System.out.println(revisar);
+        } else {
+            HistoriaDeUsuario revisar = historiaDeUsuarioService.guardar(historiaDeUsuario);
         }
 
         return "redirect:/kanban";
@@ -180,7 +192,13 @@ public class HomeController {
 
         System.out.println("Entro");
         System.out.println(historiaDeUsuario);
-        historiaDeUsuario.setFechaFinalizacion(LocalDate.parse(fechaTermino));
+        if (historiaDeUsuario.getFechaCreacion().equals(null)) {
+            historiaDeUsuario.setFechaCreacion(LocalDate.parse(fechaTermino));
+            historiaDeUsuario.setSprint(sprint);
+        }else {
+            historiaDeUsuario.setFechaFinalizacion(LocalDate.parse(fechaTermino));
+            historiaDeUsuario.setSprint(sprint);
+        }
         historiaDeUsuario.setSprint(sprint);
 
 

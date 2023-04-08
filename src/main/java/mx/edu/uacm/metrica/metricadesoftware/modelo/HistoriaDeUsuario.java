@@ -110,7 +110,10 @@ public class HistoriaDeUsuario {
                 ", description='" + description + '\'' +
                 ", points=" + points +
                 ", status='" + status + '\'' +
+                ", fechaCreacion=" + fechaCreacion +
+                ", fechaFinalizacion=" + fechaFinalizacion +
                 ", asignado=" + asignado +
+                ", sprint=" + sprint +
                 '}';
     }
 }
