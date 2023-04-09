@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Highcharts Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center mt-3 mb-5">Gráfica de Burdown Chart</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div id="container"></div>
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'line',
+                    events: {
+                        load: function() {
+                            this.showTable();
+                        }
+                    }
+                },
+                title: {
+                    text: 'Gráfica de Alcance'
+                },
+                xAxis: {
+                    categories: /*[[${dias}]]*/
+                },
+                yAxis: {
+                    title: {
+                        text: 'Valores'
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        showTable: true,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{y:.0f}',
+                            style: {
+                                fontWeight: 'bold'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Linea de tendencia',
+                    data: /*[[${lineaTendencia}]]*/,
+                    color: 'green' // Cambia el color de la línea de tendencia a verde
+                },
+                {
+                    name: 'Linea real',
+                    data: /*[[${lineaReal}]]*/,
+                    color: '#FF0000' // Cambia el color de la línea real a rojo
+                }]
+            });
+        });
+    </script>
+    
+    
+    
+</body>
+</html>
