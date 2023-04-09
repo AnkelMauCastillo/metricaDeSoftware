@@ -34,7 +34,7 @@ public class HistoriaController {
 	    	        HistoriaDeUsuario historiaGuardada;
 	    	        historiaGuardada = historiaDeUsuarioService.guardar(historia);
 	    	        if (historiaGuardada != null && historiaGuardada.getId() != null)
-	    	          model.addAttribute("mensajeExitoso", "Registro exitoso!" +historia.getTitle());
+	    	          model.addAttribute("mensajeExitoso", "Registro exitoso de la historia: " +historia.getTitle());
 	    	      } catch (AplicacionExcepcion e) {
 	    	        log.error(e.getMessage());
 	    	        model.addAttribute("mensajeError", e.getMessage());
