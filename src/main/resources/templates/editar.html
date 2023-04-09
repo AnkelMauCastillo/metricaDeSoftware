@@ -70,7 +70,7 @@
                         min="2023-04-08" max="2023-04-30" readonly>
                 </div>
                 <div class="col-sm-6" th:unless="${banderaFecha}">
-                    
+                    <input type="hidden" th:field="*{fechaCreacion}">                    
                 </div>
             </div>
 

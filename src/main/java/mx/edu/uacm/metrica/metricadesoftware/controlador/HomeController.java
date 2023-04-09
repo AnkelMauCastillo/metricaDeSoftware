@@ -3,8 +3,6 @@ package mx.edu.uacm.metrica.metricadesoftware.controlador;
 import mx.edu.uacm.metrica.metricadesoftware.expcion.AplicacionExcepcion;
 import mx.edu.uacm.metrica.metricadesoftware.modelo.HistoriaDeUsuario;
 import mx.edu.uacm.metrica.metricadesoftware.modelo.Sprint;
-import mx.edu.uacm.metrica.metricadesoftware.modelo.Usuario;
-import mx.edu.uacm.metrica.metricadesoftware.service.IHistoriaDeUsuarioService;
 import mx.edu.uacm.metrica.metricadesoftware.service.impl.HistoriaDeUsuarioServiceImpl;
 import mx.edu.uacm.metrica.metricadesoftware.service.impl.SprintServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +34,7 @@ public class HomeController {
         model.addAttribute("puntosTotales", puntosTotales);
         // Agregar las historias de usuario al modelo
         model.addAttribute("historias", historias);
-        Sprint sprint = sprintService.obtenerSprintPorId(1l);
+        Sprint sprint = sprintService.obtenerSprintPorId(1L);
         LocalDate fechaInicio = sprint.getFechaInicio();
         LocalDate fechaFin = sprint.getFechaFin();
         buscarDiasLaborables(model, fechaInicio, fechaFin);
@@ -48,7 +45,7 @@ public class HomeController {
     
     @GetMapping("/kanban")
     public String mostrarKanban(Model model) {
-        Sprint sprint = sprintService.obtenerSprintPorId(1l);
+        Sprint sprint = sprintService.obtenerSprintPorId(1L);
         LocalDate fechaInicio = sprint.getFechaInicio();
         LocalDate fechaFin = sprint.getFechaFin();
         long duracion = sprint.calcularDiasLaborables(fechaInicio, fechaFin);
@@ -64,15 +61,11 @@ public class HomeController {
 
         for (HistoriaDeUsuario h : historias) {
             String estado = h.getStatus();
-            
-            if (estado.equals("porhacer")) {
-                historiasPorHacer.add(h);
-            }
-            else if (estado.equals("haciendo")) {
-                historiasHaciendo.add(h);
-            }
-            else if (estado.equals("hecho")) {
-                historiasHechas.add(h);
+
+            switch (estado) {
+                case "porhacer" -> historiasPorHacer.add(h);
+                case "haciendo" -> historiasHaciendo.add(h);
+                case "hecho" -> historiasHechas.add(h);
             }
         }
 
@@ -95,7 +88,7 @@ public class HomeController {
         } else if (historiaDeUsuario.getStatus().equals("haciendo")) {
             mapStatus.put("hecho", "Hecho");
         }
-        Sprint sprint = sprintService.obtenerSprintPorId(1l);
+        Sprint sprint = sprintService.obtenerSprintPorId(1L);
         LocalDate fechaInicio = sprint.getFechaInicio();
         LocalDate fechaFin = sprint.getFechaFin();
         long duracion = sprint.calcularDiasLaborables(fechaInicio, fechaFin);
@@ -139,7 +132,7 @@ public class HomeController {
         model.addAttribute("mapStatus", mapStatus);
         model.addAttribute("historiaDeUsuario", historiaDeUsuario);
 
-        Sprint sprint = sprintService.obtenerSprintPorId(1l);
+        Sprint sprint = sprintService.obtenerSprintPorId(1L);
         model.addAttribute("idSprint", sprint.getId());
         LocalDate fechaInicio = sprint.getFechaInicio();
         LocalDate fechaFin = sprint.getFechaFin();
@@ -210,6 +203,71 @@ public class HomeController {
 
         // Redirige a la página que quieras mostrar después de guardar
         return "redirect:/kanban";
+    }
+
+    @GetMapping("/charts")
+    public String mostrarGrafica(Model model){
+        Sprint sprint = sprintService.obtenerSprintPorId(1L);
+        LocalDate fechaInicio = sprint.getFechaInicio();
+        LocalDate fechaFin = sprint.getFechaFin();
+        long duracion = sprint.calcularDiasLaborables(fechaInicio, fechaFin);
+        List<HistoriaDeUsuario> historias = historiaDeUsuarioService.buscarTodos();
+        Integer puntosTotales = historiaDeUsuarioService.sumarPuntosHistorias();
+        //Map <String, Object> estimar = new HashMap<>();
+        double m = (double) puntosTotales / duracion;
+        int b = puntosTotales;
+        List<Integer> lineaTendencia = new ArrayList<>();
+        List<Integer> dias = new ArrayList<>();
+        for (int i = 0; i <= duracion; i++) {
+            int valorEsperado = (int) Math.round(b - m * i);
+            lineaTendencia.add(valorEsperado);
+            dias.add(i+1);
+            System.out.println(i+1);
+            System.out.println(valorEsperado);
+        }
+        model.addAttribute("dias", dias);
+        model.addAttribute("lineaTendencia", lineaTendencia);
+        System.out.println("Prueba dias laborables");
+        List<LocalDate> diasLaborables = new ArrayList<>();
+        for (LocalDate date = fechaInicio; date.isBefore(fechaFin); date = date.plusDays(1)) {
+            DayOfWeek dayOfWeek = date.getDayOfWeek();
+            if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY) {
+                diasLaborables.add(date);
+                System.out.println(date);
+            }
+        }
+        System.out.println("Prueba historias Finalizadas");
+        for (HistoriaDeUsuario history: historias){
+            System.out.println(history.getFechaFinalizacion());
+        }
+        List<Integer> lineaReal = new ArrayList<>();
+        System.out.println("Prueba matriz");
+        int restar = puntosTotales;
+        int sumaTotal = 0;
+        for (LocalDate diasLaborable : diasLaborables) {
+            int sumaPuntos = 0;
+            for (HistoriaDeUsuario historia : historias) {
+                if (diasLaborable.equals(historia.getFechaFinalizacion())) {
+                    //System.out.println(historias.get(j).getFechaFinalizacion());
+                    sumaPuntos = sumaPuntos + historia.getPoints();
+
+
+                }
+
+            }
+            System.out.println(sumaPuntos);
+            lineaReal.add(restar = restar - sumaPuntos);
+
+            sumaTotal = sumaTotal + sumaPuntos;
+        }
+        System.out.println("Comparación sumarPuntos" + sumaTotal);
+        model.addAttribute("lineaReal", lineaReal);
+        model.addAttribute("dias", dias);
+        model.addAttribute("lineaTendencia", lineaTendencia);
+
+
+
+        return "charts2";
     }
 
 
