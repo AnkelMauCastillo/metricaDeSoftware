@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="grafica">
 <head>
     <title>Highcharts Example</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -15,7 +16,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="text-center mt-3 mb-5">Gráfica de Burdown Chart</h1>
+                
             </div>
         </div>
         <div class="row">
@@ -36,7 +37,7 @@
                     }
                 },
                 title: {
-                    text: 'Gráfica de Alcance'
+                    text: 'Gráfica de Burndown Chart'
                 },
                 xAxis: {
                     categories: /*[[${dias}]]*/
@@ -75,4 +76,5 @@
     
     
 </body>
+</th:block>
 </html>

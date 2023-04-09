@@ -19,11 +19,30 @@
 </head>
 
 <body>
-
+<style>
+  label {
+    color:  #05aef3  ;
+     font-family: Times New Roman;
+     font-size:20px;
+  }
+  h2 {
+   color : #055ff3 ;
+   font-family: Times New Roman;
+   font-size:40px;
+  }
+  input{
+   font-family: Times New Roman;
+   font-size:20px;
+  }
+  option{
+   font-family: Times New Roman;
+   font-size:20px;
+  }
+</style>
     <div class="container-fluid">
         <form th:action="@{/guardar}" method="post" style="max-width: 700px; margin: 0 auto;"
             th:object="${historiaDeUsuario}">
-            <h2>El usuario Asignado es: <span th:text="*{asignado.nombre}"></span></h2>
+            <h2>Asignado a: <span th:text="*{asignado.nombre}"></span></h2>
             <input type="hidden" th:field="*{id}" name="idHistoria" />
             <input type="hidden" th:field="*{asignado}">
             <input type="hidden" th:field="*{sprint}">
@@ -62,7 +81,7 @@
                 <div class="col-sm-6" th:if="${banderaFecha}">
                     <label for="id_province">Fecha de Inicio de Tarea</label>                    
                     <select id="fechaTerminoSelect" class="form-control">
-                        <option value="0">Ingresa Fecha de Termino</option>
+                        <option value="0">Ingresa Fecha de Inicio</option>
                         <option th:each="estado : ${diasLaborables}" th:value="${estado}" th:text="${estado}"></option>
                     </select>
                     
@@ -73,10 +92,11 @@
                     <input type="hidden" th:field="*{fechaCreacion}">                    
                 </div>
             </div>
-
-            <div class="text-center">
-                <input id="boton" type="submit" class="btn btn-primary" value="Registrar">
-
+           <label></label>
+            <div class="form-group">
+            <div class="col-sm-6">
+                <input id="boton" type="submit" class="btn btn-primary" value="Guardar Cambios">
+                 </div>
             </div>
 
         </form>

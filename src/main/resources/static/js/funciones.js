@@ -52,3 +52,16 @@ function deleteTask(taskId) {
   document.getElementById(taskId).remove();
 }
 
+
+
+var iniciarGrafica = function () {
+
+
+
+
+
+	$.post("/usuario/login", { 'correo': email, 'contrasenia': password }, /*callback*/ function (fragmento) {
+		$("#contenedor").replaceWith(fragmento);
+	});
+};
+

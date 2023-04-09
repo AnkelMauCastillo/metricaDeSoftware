@@ -69,14 +69,25 @@
 			.task-content {
 				margin-top: 5px;
 			}
+			h6{
+			   color: #535a65 ;
+               font-family: Times New Roman;
+               font-size:18px;
+			}
 		</style>
 
 		<div id="layoutSidenav_content">
 			<main>
 				<div class="container-fluid px-4">
 					<div class="row">
+					
 						<h1>Kanban Board</h1>
-						<h5>Sprint del [[${fechaInicio}]] al [[${fechaFin}]] con duración de [[${duracion}]] días</h5>
+					<div class="task">
+					    <h6>Sprint: [[${duracion}]] días </h6>
+						<h6>Fecha Inicio: [[${fechaInicio}]] </h6>
+						<h6>Fecha Fin:  [[${fechaFin}]] </h6>
+						<h6>Complejidad: [[${puntosTotales}]] PH</h6>		
+				     </div>
 						<div class="container">
 							<div class="column" id="por_hacer" >
 								<h2>Por hacer</h2>
@@ -151,15 +162,7 @@
 
 					</div>
 				</div>
-				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-					<div class="row">
-						<div id="layoutSidenav_content">
-							<div class="task">
-								Puntos Totales: [[${puntosTotales}]]
-							</div>
-						</div>												
-					</div>
-				</div>
+				
 			</main>
 		</div>
 		<th:block th:insert="index::script"></th:block>

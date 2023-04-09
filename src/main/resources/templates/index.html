@@ -53,7 +53,7 @@
                                 <nav class="sb-sidenav-menu-nested nav">
 
                                     <a class="nav-link" href="/historiasUsuario">Listar Historias</a>
-                                    <a class="nav-link" href="/historiasUsuario">Editar</a>
+                                   
                                     <a class="nav-link" href="/historiaRegistro">Agregar</a>
                                 </nav>
                             </div>
@@ -76,36 +76,35 @@
 <div id="layoutSidenav_content">
     <main>
         <div class="container-fluid px-4">
-            <h1 class="mt-4">Burndown Chart</h1>
-            <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item active">Dashboard</li>
-            </ol>
+            <h1 class="mt-4">Dashboard</h1>
+           
             <div class="row">
                 <div class="row">
-                    <div class="col-xl-6">
+                    <div class="col-xl-20">
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-chart-area me-1"></i>
-                                Grafica de avance
+                                Avance
                             </div>
                             <!----------- grafica de burdwon ------------- -->
-                            <canvas id="burndown-chart"></canvas>
+                            
+                            <div th:insert="charts2::grafica"></div>
                             <div class="card-footer small text-muted">Updated <a id="fecha"></a></div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-xl-6">
+                <div class="col-xl-7">
                     <div class="card mb-4">
                         <form th:action="@{/sprint/nuevo}" method="post">
                             <label for="fechaInicio">Fecha de inicio:</label>
                             <input type="date" id="fechaInicio" name="fechaInicio" required>
-                            <br>
+                          
                             <label></label>
                             <label for="fechaFin">Fecha de fin:</label>
                             <input type="date" id="fechaFin" name="fechaFin" required>
-                            <br>
+                         
                             <!-- Otros campos del formulario... -->
                             <button type="submit">Crear Sprint</button>
                         </form>
@@ -115,18 +114,6 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-xl-6">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-chart-area me-1"></i>
-                            Tareas
-                        </div>
-                        <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
-                    </div>
-                </div>
-
-            </div>
            
         </div>
     </main>
