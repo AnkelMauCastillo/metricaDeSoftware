@@ -101,8 +101,9 @@ public class HomeController {
         long duracion = sprint.calcularDiasLaborables(fechaInicio, fechaFin);
 
         buscarDiasLaborables(model, fechaInicio, fechaFin);
-
-
+        boolean banderaFecha = historiaDeUsuario.getStatus().equals("porhacer");
+        System.out.println(banderaFecha);
+        model.addAttribute("banderaFecha", banderaFecha);
         model.addAttribute("mapStatus", mapStatus);
         model.addAttribute("historiaDeUsuario", historiaDeUsuario);
         model.addAttribute("idSprint", sprint.getId());
@@ -192,13 +193,9 @@ public class HomeController {
 
         System.out.println("Entro");
         System.out.println(historiaDeUsuario);
-        if (historiaDeUsuario.getFechaCreacion().equals(null)) {
-            historiaDeUsuario.setFechaCreacion(LocalDate.parse(fechaTermino));
-            historiaDeUsuario.setSprint(sprint);
-        }else {
-            historiaDeUsuario.setFechaFinalizacion(LocalDate.parse(fechaTermino));
-            historiaDeUsuario.setSprint(sprint);
-        }
+
+        historiaDeUsuario.setFechaFinalizacion(LocalDate.parse(fechaTermino));
+        historiaDeUsuario.setSprint(sprint);
         historiaDeUsuario.setSprint(sprint);
 
 
