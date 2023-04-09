@@ -96,6 +96,8 @@
 											<a th:href="@{'/editar/'+ ${historia1.id}}">Editar Historia</a>
 										</div>
 
+										
+
 									</div>
 								</th:block>
 
@@ -137,6 +139,10 @@
 										<div class="task-header" th:if="${historia3.fechaFinalizacion == null}">
                                             <a th:href="@{'/editarFecha/'+ ${historia3.id}}">Terminar Historia</a>
                                         </div>
+
+										<div th:if="${historia3.fechaFinalizacion != null}" style="color: green;">
+											Este elemento ha sido completado el dia: <span th:text="${historia3.fechaFinalizacion}"></span>
+										</div>
 
 									</div>
 								</th:block>

@@ -1,7 +1,7 @@
 /**
  * 
  */
- const data = {
+const data = {
   labels: ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5', 'Día 6', 'Día 7'],
   datasets: [
     {
@@ -26,28 +26,29 @@ const config = {
   data: data,
   options: {}
 };
- // grafica de burndownchart
+// grafica de burndownchart
 var myChart = new Chart(
-    document.getElementById('burndown-chart'),
-    config
+  document.getElementById('burndown-chart'),
+  config
 );
 
 //arrastre de las tareas del tablero kanban
 
 function allowDrop(event) {
-			event.preventDefault();
-		}
+  event.preventDefault();
+}
 
-		function drag(event) {
-			event.dataTransfer.setData("text", event.target.id);
-		}
+function drag(event) {
+  event.dataTransfer.setData("text", event.target.id);
+}
 
-		function drop(event) {
-			event.preventDefault();
-			var data = event.dataTransfer.getData("text");
-			event.target.appendChild(document.getElementById(data));
-		}
+function drop(event) {
+  event.preventDefault();
+  var data = event.dataTransfer.getData("text");
+  event.target.appendChild(document.getElementById(data));
+}
 
-		function deleteTask(taskId) {
-			document.getElementById(taskId).remove();
-		}
+function deleteTask(taskId) {
+  document.getElementById(taskId).remove();
+}
+
