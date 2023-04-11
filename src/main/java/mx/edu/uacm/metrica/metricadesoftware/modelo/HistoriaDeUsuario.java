@@ -17,6 +17,10 @@ public class HistoriaDeUsuario {
     private int points;
     private String status;
 
+    private int cycleTime;
+    private int leadTime;
+
+
     private LocalDate fechaCreacion;
 
     private LocalDate fechaFinalizacion;
@@ -102,6 +106,22 @@ public class HistoriaDeUsuario {
         this.status = status;
     }
 
+    public int getCycleTime() {
+        return cycleTime;
+    }
+
+    public void setCycleTime(int cycleTime) {
+        this.cycleTime = cycleTime;
+    }
+
+    public int getLeadTime() {
+        return leadTime;
+    }
+
+    public void setLeadTime(int leadTime) {
+        this.leadTime = leadTime;
+    }
+
     @Override
     public String toString() {
         return "HistoriaDeUsuario{" +
@@ -110,6 +130,8 @@ public class HistoriaDeUsuario {
                 ", description='" + description + '\'' +
                 ", points=" + points +
                 ", status='" + status + '\'' +
+                ", cycleTime=" + cycleTime +
+                ", leadTime=" + leadTime +
                 ", fechaCreacion=" + fechaCreacion +
                 ", fechaFinalizacion=" + fechaFinalizacion +
                 ", asignado=" + asignado +

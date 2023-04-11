@@ -14,14 +14,18 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 @Service
 @Slf4j
 public class HistoriaDeUsuarioServiceImpl implements IHistoriaDeUsuarioService {
 
     @Autowired
     private HistoriaDeUsuarioRepository historiaDeUsuarioRepository;
+
+
+
+
 
     public HistoriaDeUsuarioServiceImpl(HistoriaDeUsuarioRepository historiaDeUsuarioRepository
                                        ) {
@@ -69,6 +73,22 @@ public class HistoriaDeUsuarioServiceImpl implements IHistoriaDeUsuarioService {
         }
         return puntosTotales;
     }
+
+    public List<Map<String, Object>> contarTareasPorUsuario(Usuario usuario) {
+        List<Object[]> tareas = historiaDeUsuarioRepository.countTareasByAsignado(usuario);
+        List<Map<String, Object>> resultado = new ArrayList<>();
+        for (Object[] tarea : tareas) {
+            Map<String, Object> map = new HashMap<>();
+            Usuario existeUsuario = (Usuario) tarea[0];
+            map.put("usuario", existeUsuario.getNombre());
+            map.put("numTareas", tarea[1]);
+            resultado.add(map);
+        }
+        return resultado;
+    }
+
+
+
 
 
 

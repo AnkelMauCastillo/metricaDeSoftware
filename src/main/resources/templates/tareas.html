@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tareas</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    
+</head>
+<body>
+    <h1>Tareas por usuario</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Número de tareas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="tarea : ${tareas}">
+                <td th:text="${tarea.usuario}"></td>
+                <td th:text="${tarea.numTareas}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="chart"></div>
+    <span>[[${tareaHechas}]]</span>
+    <script th:inline="javascript">
+        var nombres = /*[[${nombres}]]*/;
+        var tareasHechas = /*[[${tareaHechas}]]*/
+            
+        $(function () {
+            Highcharts.chart('chart', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Tareas terminadas por día'
+                },
+                xAxis: {
+                    categories:  nombres
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Tareas terminadas'
+                    }
+                },
+                series: [{
+                    name: 'Dia de Entregas',
+                    data: tareasHechas
+                }]
+            });
+        });
+    </script>
+
+   
+</body>
+</html>

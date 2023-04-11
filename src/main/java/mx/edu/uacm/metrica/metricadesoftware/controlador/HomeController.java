@@ -3,8 +3,11 @@ package mx.edu.uacm.metrica.metricadesoftware.controlador;
 import mx.edu.uacm.metrica.metricadesoftware.expcion.AplicacionExcepcion;
 import mx.edu.uacm.metrica.metricadesoftware.modelo.HistoriaDeUsuario;
 import mx.edu.uacm.metrica.metricadesoftware.modelo.Sprint;
+import mx.edu.uacm.metrica.metricadesoftware.modelo.Usuario;
+import mx.edu.uacm.metrica.metricadesoftware.service.impl.CalculadoraLeadTimeCycleTime;
 import mx.edu.uacm.metrica.metricadesoftware.service.impl.HistoriaDeUsuarioServiceImpl;
 import mx.edu.uacm.metrica.metricadesoftware.service.impl.SprintServiceImpl;
+import mx.edu.uacm.metrica.metricadesoftware.service.impl.UsuarioServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -25,6 +28,11 @@ public class HomeController {
 
     @Autowired
     private SprintServiceImpl sprintService;
+
+    @Autowired
+    private UsuarioServiceImpl usuarioService;
+
+
     
     @GetMapping("/historiasUsuario")
     public String mostrarInicio(Model model) {
@@ -241,25 +249,39 @@ public class HomeController {
             System.out.println(history.getFechaFinalizacion());
         }
         List<Integer> lineaReal = new ArrayList<>();
+
         System.out.println("Prueba matriz");
         int restar = puntosTotales;
         int sumaTotal = 0;
+        String auxHistoria = "";
+        List<String> fechas = new ArrayList<>();
+        List<Integer> sumTotalTareasTerminadas = new ArrayList<>();
         for (LocalDate diasLaborable : diasLaborables) {
             int sumaPuntos = 0;
+            int acum = 0;
             for (HistoriaDeUsuario historia : historias) {
                 if (diasLaborable.equals(historia.getFechaFinalizacion())) {
                     //System.out.println(historias.get(j).getFechaFinalizacion());
                     sumaPuntos = sumaPuntos + historia.getPoints();
-
+                    acum++;
+                    auxHistoria = String.valueOf(historia.getFechaFinalizacion());
 
                 }
 
+
             }
+            //cambiar a lista
+            fechas.add(auxHistoria);
+            System.out.println(fechas);
+            sumTotalTareasTerminadas.add(acum);
+
             System.out.println(sumaPuntos);
             lineaReal.add(restar = restar - sumaPuntos);
 
             sumaTotal = sumaTotal + sumaPuntos;
         }
+        model.addAttribute("sumTotalTareasTerminadas", sumTotalTareasTerminadas);
+        model.addAttribute("fechas", fechas);
         System.out.println("Comparación sumarPuntos" + sumaTotal);
         model.addAttribute("lineaReal", lineaReal);
         model.addAttribute("dias", dias);
@@ -269,6 +291,136 @@ public class HomeController {
 
         return "charts2";
     }
+
+    @GetMapping("/prueba")
+    public String calcularMetricas(Model model){
+        CalculadoraLeadTimeCycleTime calculadoraMetricas = new CalculadoraLeadTimeCycleTime();
+        List <HistoriaDeUsuario> listHistorias = historiaDeUsuarioService.buscarTodos();
+        for (int i = 0; i < listHistorias.size(); i++) {
+            int cycleTime = calculadoraMetricas.calcularCycleTime(listHistorias.get(i));
+            int leadTime = calculadoraMetricas.calcularLeadTime(listHistorias.get(i));
+            listHistorias.get(i).setCycleTime(cycleTime);
+            listHistorias.get(i).setLeadTime(leadTime);
+            try {
+                historiaDeUsuarioService.guardar(listHistorias.get(i));
+            } catch (AplicacionExcepcion e) {
+                throw new RuntimeException(e);
+            }
+
+            //System.out.println("El leadTime es:" + leadTime + " , El CycleTime es: " + cycleTime);
+            //System.out.println(listHistorias.get(i));
+        }
+
+
+
+        Sprint sprint = sprintService.obtenerSprintPorId(1L);
+        LocalDate fechaInicio = sprint.getFechaInicio();
+        LocalDate fechaFin = sprint.getFechaFin();
+        long duracion = sprint.calcularDiasLaborables(fechaInicio, fechaFin);
+
+        List<LocalDate> diasLaborables = new ArrayList<>();
+        for (LocalDate date = fechaInicio; date.isBefore(fechaFin); date = date.plusDays(1)) {
+            DayOfWeek dayOfWeek = date.getDayOfWeek();
+            if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY) {
+                diasLaborables.add(date);
+            }
+        }
+        Map <String, Integer> cycleTimeMap = new HashMap<>();
+        Map <String, Integer> leadTimeMap = new HashMap<>();
+        for (int i = 0; i < diasLaborables.size(); i++) {
+            for (int j = 0; j < listHistorias.size(); j++) {
+                if (diasLaborables.get(i).equals(listHistorias.get(j).getFechaFinalizacion())) {
+                    //System.out.println(listHistorias.get(j).getCycleTime());
+                    System.out.println("dia:"+ (i+1) + ", " + diasLaborables.get(i) + ", LeadTime: " + listHistorias.get(j).getLeadTime() + ", CyvleTime: " + listHistorias.get(j).getCycleTime());
+                    cycleTimeMap.put("dia: " + (i+1), listHistorias.get(j).getCycleTime());
+                    leadTimeMap.put("dia" +(i+1),listHistorias.get(j).getLeadTime());
+                }
+
+            }
+
+        }
+
+        model.addAttribute("cycleTimeMap", cycleTimeMap);
+        model.addAttribute("leadTimeMap", leadTimeMap);
+        model.addAttribute("diasLaborables", diasLaborables);
+
+        return "prueba";
+    }
+
+    @GetMapping("/chart")
+    public String showChart(Model model) {
+        // Crear una lista de historias de usuario
+        List<HistoriaDeUsuario> historias = historiaDeUsuarioService.buscarTodos();
+        // Agregue las historias de usuario que desea incluir en el gráfico aquí
+        Sprint sprint = sprintService.obtenerSprintPorId(1L);
+        LocalDate fechaInicio = sprint.getFechaInicio();
+        LocalDate fechaFin = sprint.getFechaFin();
+
+
+        // Crear una lista de puntos de datos para el gráfico
+        List<Object[]> chartData = new ArrayList<>();
+        long duracion = sprint.calcularDiasLaborables(fechaInicio, fechaFin);
+        List<LocalDate> diasLaborables = new ArrayList<>();
+        for (LocalDate date = fechaInicio; date.isBefore(fechaFin); date = date.plusDays(1)) {
+            DayOfWeek dayOfWeek = date.getDayOfWeek();
+            if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY) {
+                diasLaborables.add(date);
+            }
+        }
+
+
+        for (int i = 0; i <  diasLaborables.size() ; i++) {
+            for (int j =0; j < historias.size(); j++) {
+                if (diasLaborables.get(i).equals(historias.get(j).getFechaFinalizacion())) {
+                    int leadTime = CalculadoraLeadTimeCycleTime.calcularLeadTime(historias.get(j));
+                    chartData.add(new Object[]{leadTime , i, historias.get(j).getId()});
+                }
+
+
+
+            }
+
+        }
+
+        // Pasar los datos del gráfico a la plantilla de Thymeleaf
+        model.addAttribute("chartData", chartData);
+
+        return "chart";
+    }
+
+    @GetMapping("/tareas")
+    public String contarTareasPorUsuario(Model model) {
+        List<Usuario> usuarios = usuarioService.buscarTodos();
+        List<Map<String, Object>> tareasTotales = new ArrayList<>(); // Lista de tareas global
+
+        for (int i = 0; i < usuarios.size(); i++) {
+            Usuario usuario = usuarios.get(i);
+            List<Map<String, Object>> tareas = historiaDeUsuarioService.contarTareasPorUsuario(usuario);
+            tareasTotales.addAll(tareas); // Agrega las tareas de este usuario a la lista global
+        }
+        List<String> nombres = new ArrayList<>();
+        List<Integer> tareaHechas = new ArrayList<>();
+
+        for (int i = 0; i<tareasTotales.size(); i++){
+            nombres.add((String) tareasTotales.get(i).get("usuario"));
+            int numeros = ((Number) tareasTotales.get(i).get("numTareas")).intValue();
+            tareaHechas.add(numeros);
+
+
+            System.out.println(numeros);
+        }
+        System.out.println(nombres);
+        System.out.println(tareaHechas);
+
+        model.addAttribute("nombres", nombres);
+        model.addAttribute("tareaHechas", tareaHechas);
+
+        model.addAttribute("tareas", tareasTotales); // Agrega la lista de tareas al modelo
+        return "tareas";
+    }
+
+
+
 
 
 

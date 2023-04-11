@@ -92,4 +92,14 @@ public class Sprint {
     public void setHistoriasDeUsuario(List<HistoriaDeUsuario> historiasDeUsuario) {
         this.historiasDeUsuario = historiasDeUsuario;
     }
+
+    @Override
+    public String toString() {
+        return "Sprint{" +
+                "id=" + id +
+                ", fechaInicio=" + fechaInicio +
+                ", fechaFin=" + fechaFin +
+                ", historiasDeUsuario=" + historiasDeUsuario +
+                '}';
+    }
 }

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tabla y gráfica de dispersión</title>
+    
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Historia de usuario</th>
+                <th>Fecha de inicio</th>
+                <th>Fecha de finalización</th>
+                <th>Lead Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Insertar los datos de la tabla aquí -->
+            <tr th:each="historia : ${historias}">
+                <td th:text="${historia.title}"></td>
+                <td th:text="${historia.fechaInicio}"></td>
+                <td th:text="${historia.fechaFinalizacion}"></td>
+                <td th:text="${historia.leadTime}"></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <canvas id="scatterChart"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script th:inline="javascript">
+        /* Obtener los datos de la gráfica desde el modelo */
+        var chartData = /*[[${chartData}]]*/ [];
+
+        /* Crear una nueva instancia del objeto Chart y configurar la gráfica */
+        var scatterChart = new Chart(document.getElementById('scatterChart'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Historias de usuario',
+                    data: chartData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)'
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Gráfica de dispersión de historias de usuario'
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'linear',
+                        position: 'bottom',
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Día'
+                        }
+                    }],
+                    yAxes: [{
+                        type: 'linear',
+                        position: 'left',
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Lead Time (días)'
+                        }
+                    }]
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            return data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index][2];
+                        }
+                    }
+                }
+            }
+        });
+
+        
+    </script>
+</body>
+</html>

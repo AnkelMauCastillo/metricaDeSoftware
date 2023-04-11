@@ -1,46 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Selector de 7 días con Bootstrap</title>
-  <!-- Incluir CSS de Bootstrap -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>Highcharts Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
 </head>
 <body>
-  <div class="container">
-    <h1>Selector de 7 días con Bootstrap</h1>
-    <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action">Día 1</a>
-        <a href="#" class="list-group-item list-group-item-action">Día 2</a>
-        <a href="#" class="list-group-item list-group-item-action">Día 3</a>
-        <a href="#" class="list-group-item list-group-item-action">Día 4</a>
-        <a href="#" class="list-group-item list-group-item-action">Día 5</a>
-        <a href="#" class="list-group-item list-group-item-action">Día 6</a>
-        <a href="#" class="list-group-item list-group-item-action">Día 7</a>
-      </div>
-      
-    <button type="button" class="btn btn-primary" id="guardarBtn">Guardar</button>
-  </div>
+    <div id="cycleTimeChart"></div>
+    <div id="leadTimeChart"></div>
+    <div id="chartContainer"></div>
+    <script th:inline="javascript">
+        /* Obtener los datos de los mapas */
+        var cycleTimeData = /*[[${cycleTimeMap}]]*/ {};
+        var leadTimeData = /*[[${leadTimeMap}]]*/ {};
 
-  <!-- Incluir JS de jQuery y Bootstrap -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        /* Configuración del gráfico de Cycle Time */
+        Highcharts.chart('cycleTimeChart', {
+            title: {
+                text: 'Gráfico de Cycle Time'
+            },
+            xAxis: {
+                categories: Object.keys(cycleTimeData)
+            },
+            yAxis: {
+                title: {
+                    text: 'Días'
+                }
+            },
+            series: [{
+                name: 'Cycle Time',
+                data: Object.values(cycleTimeData)
+            }]
+        });
 
-  <!-- Inicializar Datepicker -->
-  <script type="text/javascript">
-    $(function () {
-      $('#datepicker').datepicker({
-        format: 'yyyy-mm-dd', // Formato de fecha
-        autoclose: true, // Cerrar automáticamente el calendario después de seleccionar una fecha
-        todayHighlight: true // Resaltar la fecha actual
-      });
-      
-      // Manejar clic en el botón "Guardar"
-      $('#guardarBtn').click(function () {
-        var fecha = $('#datepicker input').val();
-        alert('Has seleccionado el día ' + fecha);
-        // Aquí puedes agregar tu lógica para guardar el día seleccionado
-      });
-    });
-  </script>
+        /* Configuración del gráfico de Lead Time */
+        Highcharts.chart('leadTimeChart', {
+            title: {
+                text: 'Gráfico de Lead Time'
+            },
+            xAxis: {
+                categories: Object.keys(leadTimeData)
+            },
+            yAxis: {
+                title: {
+                    text: 'Días'
+                }
+            },
+            series: [{
+                name: 'Lead Time',
+                data: Object.values(leadTimeData)
+            }]
+        });
+
+        // Obtener el mapa de acumuladoTerminadas desde el modelo
+  const acumuladoTerminadas = [[${acumuladoTerminadas}]];
+  
+  // Obtener las claves y valores del mapa
+  const categories = Object.keys(acumuladoTerminadas);
+  const data = Object.values(acumuladoTerminadas);
+  
+  // Crear la gráfica de barras
+  Highcharts.chart('container-barra', {
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: 'Historias de Usuario Terminadas por Fecha'
+    },
+    xAxis: {
+      categories: categories,
+      title: {
+        text: 'Fecha'
+      }
+    },
+    yAxis: {
+      min: 0,
+      title: {
+        text: 'Cantidad de Historias'
+      }
+    },
+    series: [{
+      name: 'Historias Terminadas',
+      data: data
+    }]
+  });
+    </script>
 </body>
 </html>
