@@ -69,8 +69,10 @@ public class UsuarioController {
              
           }
       }
-     
-    
+      System.out.println("Prueba historias Finalizadas");
+      for (HistoriaDeUsuario history: historias){
+          
+      }
       List<Integer> lineaReal = new ArrayList<>();
      
       int restar = puntosTotales;
@@ -100,5 +102,7 @@ public class UsuarioController {
 
       return "index";
   }
+  
+  
 
 }

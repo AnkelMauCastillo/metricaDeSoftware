@@ -14,6 +14,6 @@ public interface HistoriaDeUsuarioRepository extends JpaRepository<HistoriaDeUsu
     List<HistoriaDeUsuario> findByStatus(String status);
     Page<HistoriaDeUsuario> findAll(Pageable pageable);
 
-    @Query("SELECT h.asignado as usuario, COUNT(h) as numTareas FROM HistoriaDeUsuario h WHERE h.asignado = :usuario GROUP BY h.asignado")
+    @Query("SELECT h.asignado as usuario, COUNT(h) as numTareas FROM HistoriaDeUsuario h WHERE h.asignado = :usuario and h.status = 'hecho'GROUP BY h.asignado")
     List<Object[]> countTareasByAsignado(Usuario usuario);
 }

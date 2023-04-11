@@ -213,7 +213,7 @@ public class HomeController {
         return "redirect:/kanban";
     }
 
-    @GetMapping("/charts")
+    @GetMapping("/charts2")
     public String mostrarGrafica(Model model){
         Sprint sprint = sprintService.obtenerSprintPorId(1L);
         LocalDate fechaInicio = sprint.getFechaInicio();
@@ -400,21 +400,21 @@ public class HomeController {
         }
         List<String> nombres = new ArrayList<>();
         List<Integer> tareaHechas = new ArrayList<>();
-
+        int suma=0;
         for (int i = 0; i<tareasTotales.size(); i++){
             nombres.add((String) tareasTotales.get(i).get("usuario"));
             int numeros = ((Number) tareasTotales.get(i).get("numTareas")).intValue();
             tareaHechas.add(numeros);
-
-
-            System.out.println(numeros);
+         
         }
-        System.out.println(nombres);
-        System.out.println(tareaHechas);
+        
+       for (int j=0;j<tareaHechas.size();j++) {
+    	   suma +=tareaHechas.get(j);
+       }
 
         model.addAttribute("nombres", nombres);
         model.addAttribute("tareaHechas", tareaHechas);
-
+       model.addAttribute("suma",suma);
         model.addAttribute("tareas", tareasTotales); // Agrega la lista de tareas al modelo
         return "tareas";
     }

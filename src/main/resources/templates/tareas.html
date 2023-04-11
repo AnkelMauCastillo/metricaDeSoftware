@@ -23,12 +23,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="tarea : ${tareas}">
-                <td th:text="${tarea.usuario}"></td>
-                <td th:text="${tarea.numTareas}"></td>
+            <tr th:each="tarea : ${tareas}"  >
+                <td th:text="${tarea.usuario}" ></td>
+                <td th:text="${tarea.numTareas}" class="table-primary"></td>
+                
             </tr>
+            <tr class="table-secondary">
+            <td th:text="Total"></td>
+            <td th:text="${suma}"></td>
+          </tr>
         </tbody>
     </table>
+   
     <div id="chart"></div>
     <span>[[${tareaHechas}]]</span>
     <script th:inline="javascript">
@@ -41,7 +47,7 @@
                     type: 'column'
                 },
                 title: {
-                    text: 'Tareas terminadas por día'
+                    text: 'Tareas terminadas por Usuario'
                 },
                 xAxis: {
                     categories:  nombres
@@ -53,7 +59,7 @@
                     }
                 },
                 series: [{
-                    name: 'Dia de Entregas',
+                    name: '# de tareas terminadas',
                     data: tareasHechas
                 }]
             });

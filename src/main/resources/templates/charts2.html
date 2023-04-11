@@ -50,7 +50,7 @@
                 },
                     yAxis: {
                         title: {
-                            text: 'Valores'
+                            text: 'PH'
                         }
                     },
                     plotOptions: {
@@ -82,39 +82,9 @@
             });
 
 
-
-
-
-
-
-
         </script>
-        <script th:inline="javascript">
-            
-            $(function () {
-                Highcharts.chart('chart', {
-                    chart: {
-                        type: 'column'
-                    },
-                    title: {
-                        text: 'Tareas terminadas por día'
-                    },
-                    xAxis: {
-                        categories:  /*[[${fechas}]]*/
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: 'Tareas terminadas'
-                        }
-                    },
-                    series: [{
-                        name: 'Dia de Entregas',
-                        data: /*[[${sumTotalTareasTerminadas}]]*/
-                    }]
-                });
-            });
-        </script>
+   </th:block>
+      
 
         <script th:inline="javascript">
             
@@ -124,7 +94,7 @@
                         type: 'line'
                     },
                     title: {
-                        text: 'Ejemplo de gráfica de líneas'
+                        text: 'Tareas Terminadas por dia'
                     },
                     xAxis: {
                         categories:/*[[${fechas}]]*/
@@ -146,6 +116,6 @@
 
 
     </body>
-</th:block>
+
 
 </html>
