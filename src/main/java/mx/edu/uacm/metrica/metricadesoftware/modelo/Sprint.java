@@ -93,13 +93,5 @@ public class Sprint {
         this.historiasDeUsuario = historiasDeUsuario;
     }
 
-    @Override
-    public String toString() {
-        return "Sprint{" +
-                "id=" + id +
-                ", fechaInicio=" + fechaInicio +
-                ", fechaFin=" + fechaFin +
-                ", historiasDeUsuario=" + historiasDeUsuario +
-                '}';
-    }
+
 }
